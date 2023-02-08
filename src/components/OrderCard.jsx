@@ -43,7 +43,17 @@ const OrderCard = (props) => {
     console.log(order);
   };
   const { order } = props;
+  const handleRefund = async (order , stallID) => {
+    const { firestore } = getFirebase();
+    const docRef = doc(firestore, "orders", order.id);
+    const updatedOrder = order;
+    delete updatedOrder.id;
+    updatedOrder.stall_order[stallID].status = "refunded"
 
+    console.log("updating to ", updatedOrder.stall_order[stallID].status);
+    await updateDoc(docRef, updatedOrder);
+    setOpen(false);
+  }
   function checkAvail(order) {
     const orderObj = order;
     const { menuList } = useMenu();
@@ -96,49 +106,8 @@ const OrderCard = (props) => {
         }
       />
       <CardContent sx={{ p: 0 }}>
-        <CollapsibleTable rows={order} />
+        <CollapsibleTable rows={order} handleRefund={handleRefund} />
       </CardContent>
-      <CardActions>
-        <Button
-          disabled={!checkAvail(order) || order.payment_status !== "unpaid"}
-          onClick={handleClickOpen}
-          variant="contained"
-          color="secondary"
-        >
-          Confirm Payment
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Confirm payment?</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {!checkAvail(order) ? (
-                <Typography color="error">
-                  Some Items in the Order Have Gone Out of Stock
-                </Typography>
-              ) : (
-                ""
-              )}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Disagree</Button>
-            <Button
-              onClick={() => {
-                handleSubmit(order);
-              }}
-              autoFocus
-              disabled={!checkAvail(order)}
-            >
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </CardActions>
     </Card>
   );
 };

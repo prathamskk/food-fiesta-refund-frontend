@@ -28,7 +28,7 @@ const Login = () => {
         alignItems="center">
 
         <Typography variant="h2">Zaika</Typography>
-        <Typography variant="h6">Cashier Application</Typography>
+        <Typography variant="h6">Refund Manager Application</Typography>
         <GoogleButton
           onClick={() => handleGoogleLogin()}
         />

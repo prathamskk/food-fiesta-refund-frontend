@@ -121,14 +121,12 @@ const Dashboard = () => {
         onChange={handleChange}
         indicatorColor="secondary"
         textColor="inherit"
-        variant="scrollable"
+        variant="fullWidth"
         scrollButtons="auto"
         aria-label="full width tabs example"
       >
         <Tab label="Search" {...a11yProps(0)} />
-        <Tab label="Payment Pending" {...a11yProps(1)} />
-        <Tab label="Paid" {...a11yProps(2)} />
-        <Tab label="Cancelled" {...a11yProps(3)} />
+        <Tab label="Cancelled" {...a11yProps(1)} />
       </Tabs>
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -150,36 +148,6 @@ const Dashboard = () => {
             spacing={{ xs: 2 }}
             columns={{ xs: 12, sm: 12, md: 12, lg: 12 }}
           >
-            {orders.map((order, index) => {
-              return (
-                <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
-                  <OrderCard order={order} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <Grid
-            container
-            spacing={{ xs: 2 }}
-            columns={{ xs: 12, sm: 12, md: 12, lg: 12 }}
-          >
-            {paidorders.map((order, index) => {
-              return (
-                <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
-                  <OrderCard order={order} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
-          <Grid
-            container
-            spacing={{ xs: 2 }}
-            columns={{ xs: 12, sm: 12, md: 12, lg: 12 }}
-          >
             {cancelorders.map((order, index) => {
               return (
                 <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
@@ -189,6 +157,7 @@ const Dashboard = () => {
             })}
           </Grid>
         </TabPanel>
+
       </SwipeableViews>
     </Box>
   );

@@ -13,10 +13,24 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useEffect, useState } from "react";
-
+import {
+  Button
+  , Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 function Row(props) {
-  const { row, stallNo, subtotal } = props;
+  const { row, stallNo, subtotal, handleRefund, order } = props;
   const [open, setOpen] = useState(false);
+  const [openRefund, setOpenRefund] = useState(false);
+  const handleCloseRefund = () => {
+    setOpenRefund(false);
+  };
+  const handleClickOpen = () => {
+    setOpenRefund(true);
+  };
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -34,6 +48,16 @@ function Row(props) {
         </TableCell>
         <TableCell align="right">{row.status}</TableCell>
         <TableCell align="right">{subtotal.subTotalObj[stallNo]}</TableCell>
+        <TableCell align="right">
+          <Button
+            onClick={handleClickOpen}
+            variant="contained"
+            disabled={row.status !== "cancelled"}
+            color="secondary"
+          >
+            REFUND
+          </Button>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -73,6 +97,31 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+      <Dialog
+        open={openRefund}
+        onClose={handleCloseRefund}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Has the Payment been refunded?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRefund}>Disagree</Button>
+          <Button
+            onClick={() => {
+              handleRefund(order, stallNo)
+              setOpenRefund(false);
+
+            }}
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
@@ -98,7 +147,7 @@ function createTotalObj(rows) {
 }
 
 export default function CollapsibleTable(props) {
-  const { rows } = props;
+  const { rows, handleRefund } = props;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -108,6 +157,7 @@ export default function CollapsibleTable(props) {
             <TableCell>Stall</TableCell>
             <TableCell align="right">Status</TableCell>
             <TableCell align="right">Subtotal</TableCell>
+            <TableCell align="right">Refund</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -119,6 +169,8 @@ export default function CollapsibleTable(props) {
                 stallNo={row}
                 row={rowObject}
                 subtotal={createTotalObj(rows)}
+                handleRefund={handleRefund}
+                order={rows}
               />
             );
           })}

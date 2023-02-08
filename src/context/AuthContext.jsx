@@ -39,7 +39,7 @@ function AuthProvider({ children }) {
               return 0
             } else
               if ([
-                "cashier"
+                "refund"
               ].includes(idTokenResult.claims.roles[0])) {
                 // Show admin UI.
                 user.role = idTokenResult.claims.roles[0]
@@ -100,7 +100,7 @@ function AuthProvider({ children }) {
               return 0
             } else
               if ([
-                "cashier"
+                "refund"
               ].includes(idTokenResult.claims.roles[0])) {
                 // Show admin UI.
                 user.role = idTokenResult.claims.roles[0]

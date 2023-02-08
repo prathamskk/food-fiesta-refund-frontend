@@ -46,7 +46,7 @@ const SharedLayout = () => {
             <EMobiledataIcon />
           </IconButton> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Cashier App
+            Refund App
           </Typography>
 
           <Stack direction="row" spacing={2}>
