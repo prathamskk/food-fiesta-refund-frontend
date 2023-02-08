@@ -20,7 +20,6 @@
     "react-google-button": "^0.7.2",
     "react-qr-scanner": "^1.0.0-alpha.11",
     "react-router-dom": "^6.8.0",
-    "react-swipeable-views-react-18-fix": "^0.14.1",
     "swiper": "^8.4.6"
   },
   "devDependencies": {
