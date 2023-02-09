@@ -29,19 +29,6 @@ const OrderCard = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSubmit = async (order) => {
-    const { firestore } = getFirebase();
-    const docRef = doc(firestore, "orders", order.id);
-    const updatedOrder = order;
-    updatedOrder.payment_status = "paid";
-    delete updatedOrder.id;
-    for (let stall_id in updatedOrder.stall_order) {
-      updatedOrder.stall_order[stall_id].status = "inprogress"
-    }
-    await updateDoc(docRef, updatedOrder);
-    setOpen(false);
-    console.log(order);
-  };
   const { order } = props;
   const handleRefund = async (order , stallID) => {
     const { firestore } = getFirebase();
@@ -53,19 +40,6 @@ const OrderCard = (props) => {
     console.log("updating to ", updatedOrder.stall_order[stallID].status);
     await updateDoc(docRef, updatedOrder);
     setOpen(false);
-  }
-  function checkAvail(order) {
-    const orderObj = order;
-    const { menuList } = useMenu();
-
-    for (let stall_order in orderObj.stall_order) {
-      for (let itemId in orderObj.stall_order[stall_order].items_ordered) {
-        if (menuList[stall_order][itemId].availability == false) {
-          return false;
-        }
-      }
-    }
-    return true;
   }
 
   const paidstyleobject = {

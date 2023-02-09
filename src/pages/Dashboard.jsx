@@ -14,6 +14,10 @@ import {
   CardHeader,
   IconButton,
   Stack,
+  AppBar,
+  Toolbar,
+  Avatar,
+  Popover
 } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 import { streamOrders, getFirebase } from "../utils/firebaseConfig";
@@ -26,6 +30,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CollapsibleTable from "../components/OrderTable";
 import OrderCard from "../components/OrderCard";
+import { useAuth } from "../context/AuthContext";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +56,17 @@ function a11yProps(index) {
 }
 
 const Dashboard = () => {
+  const { user, handleSignOut } = useAuth();
+  const [details, setDetails] = useState(false);
+  const [anchor, setAnchor] = useState(null);
+  const open = Boolean(anchor);
+  const handleClick = (event) => {
+    setAnchor(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchor(null);
+  };
   const [searchValue, setSearchValue] = useState();
   const { menuList } = useMenu();
   const [orders, setOrders] = useState([]);
@@ -110,11 +126,61 @@ const Dashboard = () => {
   };
   return (
     <Box>
-      <SearchBar
-        handleChangeIndex={handleChangeIndex}
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-      />
+     <AppBar position="sticky">
+        <Toolbar>
+          {/* <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="logo"
+          >
+            <EMobiledataIcon />
+          </IconButton> */}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Refund App
+          </Typography>
+          <SearchBar
+            handleChangeIndex={handleChangeIndex}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <Stack direction="row" spacing={2}>
+            <Button id="profile-button" onClick={handleClick}>
+              <Avatar src={user?.photoURL}>{user?.displayName[0]}</Avatar>
+            </Button>
+          </Stack>
+          <Popover
+            anchorEl={anchor}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Card sx={{ maxWidth: 345 }}>
+              <CardHeader
+                avatar={
+                  <Avatar src={user?.photoURL}>{user?.displayName[0]}</Avatar>
+                }
+                title={user?.displayName}
+                subheader={user?.email}
+              />
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="flex-end"
+              >
+                <Button onClick={handleSignOut}>Logout</Button>
+              </Box>
+            </Card>
+          </Popover>
+        </Toolbar>
+      </AppBar>
       <Tabs
         value={value}
         onChange={handleChange}
