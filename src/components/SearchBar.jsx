@@ -95,7 +95,15 @@ const SearchBar = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <QrReader onError={handleError} onScan={handleScan} style={previewStyle} />
+          <QrReader onError={handleError} onScan={handleScan} style={previewStyle} constraints={
+
+            {
+              video: {
+                facingMode: { ideal: "environment" }
+              }
+            }
+          }
+          />
         </Box>
       </Modal>
     </Box>
