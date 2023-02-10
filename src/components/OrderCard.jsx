@@ -30,7 +30,7 @@ const OrderCard = (props) => {
     setOpen(false);
   };
   const { order } = props;
-  const handleRefund = async (order , stallID) => {
+  const handleRefund = async (order, stallID) => {
     const { firestore } = getFirebase();
     const docRef = doc(firestore, "orders", order.id);
     const updatedOrder = order;
@@ -58,7 +58,7 @@ const OrderCard = (props) => {
   return (
     <Card sx={{ minWidth: 275 }} variant="outlined">
       <CardHeader
-        sx={order.payment_status === "unpaid" ||order.payment_status === "cancelled" ? unpaidstyleobject : paidstyleobject}
+        sx={order.payment_status === "unpaid" || order.payment_status === "cancelled" ? unpaidstyleobject : paidstyleobject}
         title={
           <Stack justifyContent="flex-start" alignItems="flex-start">
             <Container maxWidth={false} disableGutters>
@@ -76,6 +76,7 @@ const OrderCard = (props) => {
 
             <Typography variant="body2">{order.user_info.name}</Typography>
             <Typography variant="caption">{order.user_info.email}</Typography>
+            <Typography variant="caption">{order.user_info.phoneNumber}</Typography>
           </Stack>
         }
       />
