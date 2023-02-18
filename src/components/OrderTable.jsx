@@ -24,11 +24,13 @@ import {
 function Row(props) {
   const { row, stallNo, subtotal, handleRefund, order } = props;
   const [open, setOpen] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [openRefund, setOpenRefund] = useState(false);
   const handleCloseRefund = () => {
     setOpenRefund(false);
   };
   const handleClickOpen = () => {
+    setDisable(false)
     setOpenRefund(true);
   };
   return (
@@ -111,7 +113,9 @@ function Row(props) {
         <DialogActions>
           <Button onClick={handleCloseRefund}>Disagree</Button>
           <Button
+            disabled={disable}
             onClick={() => {
+              setDisable(true)
               handleRefund(order, stallNo)
               setOpenRefund(false);
 
