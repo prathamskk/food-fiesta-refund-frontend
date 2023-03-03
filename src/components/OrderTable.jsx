@@ -178,16 +178,6 @@ export default function CollapsibleTable(props) {
               />
             );
           })}
-          <TableRow>
-            <TableCell />
-            <TableCell />
-            <TableCell align="right">
-              <Typography variant="h6">Total:</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography variant="h6">{createTotalObj(rows).Total}</Typography>
-            </TableCell>
-          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
